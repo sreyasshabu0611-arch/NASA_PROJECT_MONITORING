@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpaceCare | Admin Login</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            color: #e9f3fb;
+            background: #07111f;
+        }
+
+        .login-box {
+            width: 90%;
+            max-width: 400px;
+            padding: 35px;
+            background: #0d1d30;
+            border: 1px solid #1c3852;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 38px;
+        }
+
+        h1 {
+            color: #57d7f5;
+            margin-bottom: 8px;
+        }
+
+        p {
+            color: #8298ad;
+            margin-bottom: 25px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            background: #07111f;
+            border: 1px solid #1c3852;
+            border-radius: 7px;
+            color: white;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 7px;
+            background: #57d7f5;
+            color: #07111f;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #36b9dc;
+        }
+
+        #message {
+            color: #ff7777;
+            margin-top: 15px;
+            min-height: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <div class="logo">🚀</div>
+
+        <h1>SpaceCare</h1>
+
+        <p>Astronaut Health Monitoring System</p>
+
+        <form id="loginForm">
+
+            <input
+                type="text"
+                id="username"
+                placeholder="Admin Username"
+                autocomplete="username"
+                required
+            >
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Admin Password"
+                autocomplete="current-password"
+                required
+            >
+
+            <button type="submit">ADMIN LOGIN</button>
+
+        </form>
+
+        <div id="message"></div>
+
+    </div>
+
+    <script>
+        const form = document.getElementById("loginForm");
+
+        form.addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            const username =
+                document.getElementById("username").value;
+
+            const password =
+                document.getElementById("password").value;
+
+            const message =
+                document.getElementById("message");
+
+            message.textContent = "Checking login...";
+
+            try {
+
+                const response = await fetch("/api/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+
+                    window.location.href = "/";
+
+                } else {
+
+                    message.textContent =
+                        result.detail || "Invalid username or password";
+
+                }
+
+            } catch (error) {
+
+                message.textContent =
+                    "Unable to connect to the server.";
+
+            }
+
+        });
+    </script>
+
+</body>
+</html>
